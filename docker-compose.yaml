@@ -1,0 +1,38 @@
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www/
+      - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    container_name: autorem_nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+    container_name: autorem_app
+
+  db:
+    image: mariadb:11
+    restart: always
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_CHARACTER_SERVER: urf8mb4
+      MARIADB_COLLACTION_SERVER: utf8mb4_general_ci
+    ports:
+      - "3307:3306"
+    container_name: autorem_db
+
+volumes:
+  mariadb_data:
