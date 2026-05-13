@@ -26,10 +26,10 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MARIADB_CHARACTER_SERVER: urf8mb4
-      MARIADB_COLLACTION_SERVER: utf8mb4_general_ci
+      MARIADB_DATABASE: ${DB_DATABASE:-car-service}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MARIADB_CHARACTER_SET_SERVER: utf8mb4
+      MARIADB_COLLATION_SERVER: utf8mb4_general_ci
     ports:
       - "3307:3306"
     container_name: autorem_db
